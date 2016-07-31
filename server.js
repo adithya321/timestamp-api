@@ -8,8 +8,17 @@ app.get('/', function (req, res) {
 });
 
 app.get('/:query', function(req, res) {
-	var unix = req.params.query;
-	var natural = moment.unix(unix).format("MMMM D, YYYY");
+	var date = req.params.query;
+	var unix = null;
+	var natural = null;
+
+	if(isNaN(date)) {
+		natural = date;
+		unix = moment(date, "MMMM D, YYYY").format("X");
+	} else {
+		unix = date;
+		natural = moment.unix(unix).format("MMMM D, YYYY");
+	}
 
 	var dateObj = { "unix": unix, "natural": natural };
 	res.send(dateObj);
